@@ -230,18 +230,92 @@
     margin-bottom: 18px;
   }
 
-  .gform-wrap {
-    width: 100%;
-    overflow: hidden;
-    border-radius: 10px;
-    border: 1px solid var(--border);
+  .rsvp-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
   }
 
-  .gform-wrap iframe {
+  .rsvp-form .field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .rsvp-form label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--mid);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .rsvp-form input {
     width: 100%;
-    min-height: 620px;
+    padding: 13px 15px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Jost', sans-serif;
+    font-size: 15px;
+    color: var(--charcoal);
+    background: white;
+    outline: none;
+    transition: border-color .2s;
+  }
+
+  .rsvp-form input:focus {
+    border-color: var(--sage-light);
+  }
+
+  .rsvp-form input::placeholder {
+    color: #bbb;
+  }
+
+  .rsvp-submit-btn {
+    width: 100%;
+    padding: 15px;
+    background: var(--sage);
+    color: white;
     border: none;
-    display: block;
+    border-radius: 10px;
+    font-family: 'Jost', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 4px;
+    transition: background .2s, transform .1s;
+  }
+
+  .rsvp-submit-btn:hover { background: var(--sage-light); }
+  .rsvp-submit-btn:active { transform: scale(.98); }
+  .rsvp-submit-btn:disabled { opacity: .6; cursor: not-allowed; }
+
+  .rsvp-success {
+    display: none;
+    text-align: center;
+    padding: 28px 16px;
+  }
+
+  .rsvp-success .success-icon { font-size: 2.5rem; margin-bottom: 10px; }
+
+  .rsvp-success .success-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--sage);
+    margin-bottom: 6px;
+  }
+
+  .rsvp-success .success-msg {
+    font-size: 13.5px;
+    color: var(--mid);
+    line-height: 1.6;
+  }
+
+  .field-error {
+    font-size: 11.5px;
+    color: #c0392b;
+    display: none;
   }
 
   /* reminder note */
@@ -343,17 +417,39 @@
       🔥 Seats are limited — reserve yours today
     </div>
 
-    <div class="gform-wrap">
-      <iframe
-        src="https://docs.google.com/forms/d/e/1FAIpQLSeGnbqZ27wNaoNXMsjA0oLnphYhJhCQIhebqCHPM7_l0cW1RA/viewform?embedded=true"
-        width="100%"
-        height="680"
-        frameborder="0"
-        marginheight="0"
-        marginwidth="0"
-        title="Growth Event RSVP Form">
-        Loading…
-      </iframe>
+    <form class="rsvp-form" id="rsvpForm">
+      <input type="hidden" name="access_key" value="22b81258-a0cd-408f-937e-74b55f655e01">
+      <input type="hidden" name="subject" value="New RSVP — Oskaloosa NAL Event (June 13)">
+      <input type="hidden" name="from_name" value="Oskaloosa NAL RSVP">
+
+      <div class="field-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" placeholder="Jane Smith" required>
+        <span class="field-error" id="nameErr">Please enter your name.</span>
+      </div>
+
+      <div class="field-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" placeholder="jane@example.com" required>
+        <span class="field-error" id="emailErr">Please enter a valid email.</span>
+      </div>
+
+      <div class="field-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" placeholder="+1 (555) 000-0000" required>
+        <span class="field-error" id="phoneErr">Please enter your phone number.</span>
+      </div>
+
+      <button type="submit" class="rsvp-submit-btn" id="submitBtn">Reserve My Seat →</button>
+    </form>
+
+    <div class="rsvp-success" id="rsvpSuccess">
+      <div class="success-icon">🎉</div>
+      <div class="success-title">You're registered!</div>
+      <div class="success-msg">
+        We'll send you a reminder before the event.<br>
+        See you on <strong>June 13 at 2 PM</strong> in Oskaloosa!
+      </div>
     </div>
 
     <div class="reminder-note">
@@ -373,5 +469,31 @@
 
 
 
+<script>
+  document.getElementById('rsvpForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+
+    const data = new FormData(this);
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: data
+      });
+      if (res.ok) {
+        document.getElementById('rsvpForm').style.display = 'none';
+        document.getElementById('rsvpSuccess').style.display = 'block';
+      } else {
+        throw new Error('Failed');
+      }
+    } catch {
+      btn.disabled = false;
+      btn.textContent = 'Reserve My Seat →';
+      alert('Something went wrong. Please try again.');
+    }
+  });
+</script>
 </body>
 </html>
