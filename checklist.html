@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oskaloosa NAL — June 13 Event Checklist</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap');
+  :root {
+    --navy:#0d1b2a;--gold:#c9a84c;--gold-light:#f0d080;--cream:#faf7f0;
+    --slate:#2c3e50;--green:#2ecc71;--red:#e74c3c;--mid:#8892a4;
+    --card-bg:#ffffff;--border:#e8e2d6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);min-height:100vh;padding:0 0 60px;}
+  header{background:var(--navy);color:white;padding:36px 32px 28px;position:relative;overflow:hidden;}
+  header::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;border:3px solid var(--gold);opacity:.2;}
+  header::after{content:'';position:absolute;bottom:-60px;right:60px;width:140px;height:140px;border-radius:50%;border:2px solid var(--gold);opacity:.12;}
+  .event-label{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:600;}
+  header h1{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;line-height:1.1;margin-bottom:8px;}
+  header h1 span{color:var(--gold-light);}
+  .header-meta{font-size:13px;color:#a0aec0;margin-top:10px;display:flex;gap:20px;flex-wrap:wrap;}
+  .team-legend{display:flex;flex-wrap:wrap;gap:8px;padding:14px 32px;background:#111e2d;border-bottom:3px solid var(--gold);}
+  .legend-pill{font-size:11px;font-weight:700;padding:4px 10px;border-radius:100px;letter-spacing:.3px;}
+  .progress-wrap{background:var(--navy);padding:12px 32px 18px;}
+  .progress-label{display:flex;justify-content:space-between;font-size:12px;color:#a0aec0;margin-bottom:8px;}
+  .progress-bar-bg{background:rgba(255,255,255,.1);border-radius:100px;height:8px;overflow:hidden;}
+  .progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:100px;transition:width .4s ease;}
+  .countdown-strip{background:var(--gold);color:var(--navy);text-align:center;padding:10px 16px;font-size:13px;font-weight:600;letter-spacing:.5px;}
+  .filters{padding:20px 24px 0;display:flex;gap:8px;flex-wrap:wrap;}
+  .filter-btn{border:1.5px solid var(--border);background:white;color:var(--slate);padding:6px 14px;border-radius:100px;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;}
+  .filter-btn.active,.filter-btn:hover{background:var(--navy);color:white;border-color:var(--navy);}
+  .phases{padding:20px 24px;display:flex;flex-direction:column;gap:20px;}
+  .phase-card{background:var(--card-bg);border-radius:14px;border:1.5px solid var(--border);overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06);}
+  .phase-header{padding:16px 20px;display:flex;align-items:center;gap:12px;cursor:pointer;user-select:none;border-bottom:1.5px solid var(--border);background:#fdfcfa;}
+  .phase-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+  .phase-title{flex:1;}
+  .phase-title h3{font-size:15px;font-weight:700;color:var(--navy);}
+  .phase-title p{font-size:11px;color:var(--mid);margin-top:2px;font-weight:500;}
+  .phase-stats{display:flex;flex-direction:column;align-items:flex-end;gap:3px;}
+  .phase-count{font-size:11px;color:var(--mid);font-weight:600;}
+  .mini-bar{width:60px;height:4px;background:#eee;border-radius:100px;overflow:hidden;}
+  .mini-bar-fill{height:100%;background:var(--gold);border-radius:100px;transition:width .4s;}
+  .phase-toggle{color:var(--mid);font-size:12px;}
+  .phase-body{padding:8px 0;}
+  .task-item{display:flex;align-items:flex-start;gap:12px;padding:12px 20px;border-bottom:1px solid #f0ece4;cursor:pointer;transition:background .15s;}
+  .task-item:last-child{border-bottom:none;}
+  .task-item:hover{background:#faf8f2;}
+  .task-item.done{opacity:.5;}
+  .task-checkbox{width:22px;height:22px;border:2px solid var(--border);border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px;transition:all .2s;background:white;}
+  .task-item.done .task-checkbox{background:var(--green);border-color:var(--green);}
+  .checkmark{color:white;font-size:13px;font-weight:800;display:none;}
+  .task-item.done .checkmark{display:block;}
+  .task-content{flex:1;}
+  .task-text{font-size:14px;font-weight:500;color:var(--navy);line-height:1.4;}
+  .task-item.done .task-text{text-decoration:line-through;color:var(--mid);}
+  .task-note{font-size:11px;color:var(--mid);margin-top:3px;line-height:1.4;}
+  .task-tag{font-size:10px;font-weight:700;letter-spacing:.5px;padding:2px 8px;border-radius:100px;white-space:nowrap;flex-shrink:0;margin-top:2px;}
+  .tag-urgent{background:#ffeaea;color:#c0392b;}
+  .tag-david{background:#e8fdf0;color:#1a7a45;}
+  .tag-samantha{background:#fde8f9;color:#8e1a6e;}
+  .tag-trainer{background:#e8f0fd;color:#1a3a8e;}
+  .tag-bethany{background:#fff5e0;color:#b06a00;}
+  .tag-amanda{background:#f0e8fd;color:#5a1a8e;}
+  .tag-team{background:#e8f6fd;color:#0a6a8e;}
+  .tracker-card{background:var(--navy);color:white;border-radius:14px;padding:20px;margin:0 24px;}
+  .tracker-title{font-family:'Playfair Display',serif;font-size:16px;color:var(--gold-light);margin-bottom:14px;}
+  .attendee-labels{display:flex;justify-content:space-between;font-size:12px;color:#a0aec0;margin-bottom:6px;}
+  .attendee-bar{background:rgba(255,255,255,.1);border-radius:100px;height:12px;overflow:hidden;}
+  .attendee-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--gold),var(--gold-light));transition:width .5s ease;}
+  .attendee-inputs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
+  .att-input-group label{display:block;font-size:11px;color:#a0aec0;margin-bottom:4px;font-weight:600;letter-spacing:.5px;}
+  .att-input-group input{width:100%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:8px 10px;color:white;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;}
+  .att-input-group input:focus{outline:none;border-color:var(--gold);}
+  .att-total{text-align:center;margin-top:14px;font-size:28px;font-family:'Playfair Display',serif;font-weight:900;color:var(--gold-light);}
+  .att-total span{font-size:13px;color:#a0aec0;display:block;margin-top:-2px;font-family:'DM Sans',sans-serif;font-weight:400;}
+  .reset-btn{display:block;width:calc(100% - 48px);margin:16px 24px 0;padding:12px;background:transparent;border:1.5px solid var(--border);border-radius:10px;color:var(--mid);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;font-weight:600;letter-spacing:.5px;text-transform:uppercase;}
+  .reset-btn:hover{border-color:var(--red);color:var(--red);}
+  .collapsed .phase-body{display:none;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="event-label">🏆 Wealth Builders · WFG</div>
+  <h1>Oskaloosa NAL<br><span>June 13, 2025</span></h1>
+  <div class="header-meta">
+    <span>📍 Oskaloosa Public Library · Iowa</span>
+    <span>🎯 30+ Attendees</span>
+    <span>🎙️ Samantha + Trainer on the ground</span>
+  </div>
+</header>
+
+<div class="team-legend">
+  <span class="legend-pill tag-david">🖥️ David (Remote)</span>
+  <span class="legend-pill tag-samantha">🎙️ Samantha</span>
+  <span class="legend-pill tag-trainer">🎙️ Trainer (TBD)</span>
+  <span class="legend-pill tag-bethany">⭐ Bethany</span>
+  <span class="legend-pill tag-amanda">🤝 Amanda</span>
+  <span class="legend-pill tag-team">👥 Full Team</span>
+  <span class="legend-pill tag-urgent">🔴 Urgent</span>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-label">
+    <span>Overall Progress</span>
+    <span id="progress-text">0 / 0 tasks done</span>
+  </div>
+  <div class="progress-bar-bg">
+    <div class="progress-bar-fill" id="main-progress" style="width:0%"></div>
+  </div>
+</div>
+
+<div class="countdown-strip" id="countdown-strip">⏳ Calculating days until June 13...</div>
+
+<div style="padding:20px 24px 0;">
+  <div class="tracker-card">
+    <div class="tracker-title">🎟️ Attendee Tracker — Goal: 30</div>
+    <div class="attendee-labels"><span>Confirmed RSVPs</span><span id="att-pct">0%</span></div>
+    <div class="attendee-bar"><div class="attendee-fill" id="att-bar" style="width:0%"></div></div>
+    <div class="attendee-inputs">
+      <div class="att-input-group"><label>Bethany's List</label><input type="number" id="att1" value="0" min="0" oninput="updateAttendees()"></div>
+      <div class="att-input-group"><label>Samantha's List</label><input type="number" id="att2" value="0" min="0" oninput="updateAttendees()"></div>
+      <div class="att-input-group"><label>Amanda's Circle</label><input type="number" id="att3" value="0" min="0" oninput="updateAttendees()"></div>
+      <div class="att-input-group"><label>Community / Flyers</label><input type="number" id="att4" value="0" min="0" oninput="updateAttendees()"></div>
+    </div>
+    <div class="att-total" id="att-total">0 <span>confirmed attendees</span></div>
+  </div>
+</div>
+
+<div class="filters">
+  <button class="filter-btn active" onclick="filterTasks('all',this)">All</button>
+  <button class="filter-btn" onclick="filterTasks('urgent',this)">🔴 Urgent</button>
+  <button class="filter-btn" onclick="filterTasks('david',this)">David</button>
+  <button class="filter-btn" onclick="filterTasks('samantha',this)">Samantha</button>
+  <button class="filter-btn" onclick="filterTasks('trainer',this)">Trainer</button>
+  <button class="filter-btn" onclick="filterTasks('bethany',this)">Bethany</button>
+  <button class="filter-btn" onclick="filterTasks('amanda',this)">Amanda</button>
+</div>
+
+<div class="phases" id="phases-container"></div>
+<button class="reset-btn" onclick="resetAll()">↺ Reset All Checkboxes</button>
+
+<script>
+const phases=[
+  {id:"venue",icon:"🏛️",color:"#e8f4fd",title:"Phase 1 — Venue & Logistics",subtitle:"Secure the library room · Confirm June 13",tasks:[
+    {text:"Call Oskaloosa Public Library — check June 13 availability",note:"Target their largest meeting room (40+ capacity). Ask about A/V, projector, chairs.",tag:"david",urgent:true},
+    {text:"Book the room — confirm 6:30–8:30 PM time slot",note:"Get written confirmation (email or screenshot). Share with the team immediately.",tag:"david",urgent:true},
+    {text:"Confirm projector is available at the library or arrange to bring one",note:"NAL presentations need a screen. Don't assume it's there.",tag:"david"},
+    {text:"Confirm the Trainer — lock in their name and travel plan to Oskaloosa",note:"This is the most urgent remote task David has. Book travel ASAP.",tag:"david",urgent:true},
+    {text:"Samantha + Trainer plan to arrive in Oskaloosa June 12 (night before)",note:"Arriving the night before removes all day-of travel risk.",tag:"samantha"},
+    {text:"Bethany confirms parking situation at the library",note:"Local knowledge — she texts Samantha the details in advance.",tag:"bethany"},
+    {text:"Amanda scouts and photos the room layout once booked",note:"Send photos to Samantha and Trainer so they can visualize the setup.",tag:"amanda"},
+  ]},
+  {id:"team",icon:"👥",color:"#e8fdf0",title:"Phase 2 — Team Roles & Briefing",subtitle:"Everyone knows their job before June 13",tasks:[
+    {text:"David runs a Zoom call with Samantha + Bethany + Amanda — 3 weeks out",note:"Walk through the full run-of-show. Assign every role clearly. No winging it.",tag:"david",urgent:true},
+    {text:"Trainer role confirmed: leads the WFG opportunity presentation (30 min max)",note:"Business credibility anchor. Keep it tight — pain first, product second.",tag:"trainer"},
+    {text:"Samantha role: opens the room, warm host, co-presenter, introductions",note:"Her hometown roots set the tone of trust. She's the bridge between the room and the business.",tag:"samantha"},
+    {text:"Bethany role: 3-min personal testimonial + room energy + greeter",note:"She is social proof. Coach her story: Problem → Discovery → Result. Real beats polished.",tag:"bethany"},
+    {text:"Amanda role: setup, sign-in table, refreshments, door greeter",note:"One clear job per task. She should not be improvising on the night.",tag:"amanda"},
+    {text:"David creates WhatsApp group: David + Samantha + Trainer + Bethany + Amanda",note:"All event coordination flows here. David manages remotely from Delaware.",tag:"david"},
+    {text:"David sends written run-of-show doc to the full team",note:"Minute-by-minute plan. Everyone reads it before the team Zoom call.",tag:"david"},
+  ]},
+  {id:"promotion",icon:"📣",color:"#fdf8e8",title:"Phase 3 — Invitations & Promotion",subtitle:"Fill 30 seats — personal always beats a flyer",tasks:[
+    {text:"Bethany personally calls her top 15–20 contacts",note:"Script: 'I'm co-hosting a free financial night June 13 — my trainer is flying in from out of state. I specifically thought of you.' Phone call beats text every time.",tag:"bethany",urgent:true},
+    {text:"Samantha reaches out to Oskaloosa family + childhood friends",note:"Her hometown roots = instant trust. These should be the easiest yeses on the list.",tag:"samantha",urgent:true},
+    {text:"Amanda personally invites her social circle — target 8–10 people",note:"Same personal framing. Not a mass blast — specific, thoughtful invites.",tag:"amanda"},
+    {text:"Bethany creates a Facebook Event for the community",note:"Title: 'Free Financial Opportunity Night — Oskaloosa, June 13 · 6:30 PM'. Keep description simple and curiosity-driven.",tag:"bethany"},
+    {text:"Bethany + Amanda post in Oskaloosa Facebook community groups",note:"Search local Oskaloosa groups. Post 3 weeks out, then a reminder 1 week before.",tag:"bethany"},
+    {text:"Amanda prints 20–30 flyers — distributes at churches, barbershops, gyms, laundromats",note:"Keep it clean: Date · Library address · Free Event · 'Learn how families build extra income'",tag:"amanda"},
+    {text:"David sets up a simple RSVP method (Google Form or DM reply)",note:"Bethany manages RSVPs and reports headcount to David weekly. You need a number.",tag:"david"},
+    {text:"Bethany + Samantha send personal reminder texts 48 hrs before the event",note:"Not a group blast — personal texts only. Remind them why they said yes.",tag:"samantha"},
+    {text:"Bethany sends final reminder morning of June 13",note:"'See you tonight at 6:30! [Library address]. We saved you a seat 🙌'",tag:"bethany"},
+  ]},
+  {id:"content",icon:"📋",color:"#f9e8fd",title:"Phase 4 — Event Content & Flow",subtitle:"Structure the night for maximum impact",tasks:[
+    {text:"David builds the full run-of-show and sends to the team",note:"6:30 doors open → 7:00 Samantha welcome → 7:08 Bethany story → 7:15 Trainer presentation → 7:45 Q&A → 8:10 one-on-ones → 8:30 close",tag:"david"},
+    {text:"Trainer prepares the WFG opportunity presentation (under 30 min)",note:"Lead with their pain — debt, income gap, no time — before any product. Keep it tight and visual.",tag:"trainer",urgent:true},
+    {text:"Samantha prepares her 5-min opening: why this event, why Oskaloosa, why now",note:"Personal, warm, sets trust. She is the bridge between the room and the business.",tag:"samantha"},
+    {text:"Coach Bethany on her 3-minute personal story",note:"Problem she had → how she found WFG → what's changed. Real and specific beats polished and generic.",tag:"bethany"},
+    {text:"Trainer prepares 2–3 NEPQ questions to ask the room",note:"Ex: 'How many of you feel like your income has kept up with the cost of living?' Gets the room talking, not just listening.",tag:"trainer"},
+    {text:"Samantha prepares printed info packets or digital one-pager on tablet",note:"Simple: income opportunity overview + clear next steps. Not overwhelming.",tag:"samantha"},
+    {text:"Amanda sets up sign-in sheet at the door before anyone arrives",note:"Capture: Name, Phone, Email. Every single person who walks in signs it. This is the follow-up pipeline.",tag:"amanda"},
+    {text:"Amanda handles refreshments — water + light snacks",note:"Budget: $30–50. People stay longer and engage more when they're comfortable.",tag:"amanda"},
+  ]},
+  {id:"followup",icon:"🔄",color:"#fde8e8",title:"Phase 5 — Follow-Up (The Money Phase)",subtitle:"Most deals close after the event, not during",tasks:[
+    {text:"Bethany personally texts every attendee — the day after",note:"Script: 'So glad you came last night — what was your biggest takeaway?' Then NEPQ from there. Don't pitch, ask.",tag:"bethany",urgent:true},
+    {text:"Samantha follows up with family + friends who attended",note:"She has the relationship — her follow-up carries more weight here than anyone else's.",tag:"samantha",urgent:true},
+    {text:"Trainer follows up with the top 3–5 most interested prospects",note:"Reference something specific they said. Schedule a one-on-one call within 48 hours.",tag:"trainer"},
+    {text:"Amanda photos the sign-in sheet and sends to David same night",note:"David loads everyone into the CRM/tracking list remotely before he goes to bed.",tag:"amanda"},
+    {text:"David tracks all prospects: Name · Contact · Interest level · Next step date",note:"This list IS the business. Don't let it go cold.",tag:"david"},
+    {text:"Samantha posts an Instagram recap reel or story that night or next morning",note:"Show the energy in the room. People who didn't come will wish they had — and ask about the next one.",tag:"samantha"},
+    {text:"David debriefs with full team on Zoom within 48 hours of the event",note:"What worked, what didn't, who are the hottest prospects. Assign follow-up owners.",tag:"david"},
+    {text:"David locks in the next Oskaloosa event while momentum is fresh",note:"Even just a date. Keep Bethany building and the team engaged.",tag:"david"},
+  ]},
+];
+
+function getState(){try{return JSON.parse(localStorage.getItem('nal_osk_v2')||'{}')}catch{return{}}}
+function saveState(s){try{localStorage.setItem('nal_osk_v2',JSON.stringify(s))}catch{}}
+let state=getState(),currentFilter='all';
+
+function renderPhases(){
+  const c=document.getElementById('phases-container');c.innerHTML='';
+  phases.forEach(phase=>{
+    const ps=state[phase.id]||{};
+    const total=phase.tasks.length,done=phase.tasks.filter((_,i)=>ps[i]).length;
+    const pct=total?Math.round(done/total*100):0;
+    const card=document.createElement('div');card.className='phase-card';
+    const tasksHTML=phase.tasks.map((task,i)=>{
+      const isDone=!!ps[i];
+      const vis=currentFilter==='all'||task.tag===currentFilter||(currentFilter==='urgent'&&task.urgent);
+      return`<div class="task-item${isDone?' done':''}" onclick="toggleTask('${phase.id}',${i})" style="${vis?'':'display:none'}">
+        <div class="task-checkbox"><span class="checkmark">✓</span></div>
+        <div class="task-content">
+          <div class="task-text">${task.text}</div>
+          ${task.note?`<div class="task-note">${task.note}</div>`:''}
+        </div>
+        ${task.urgent?'<span class="task-tag tag-urgent">URGENT</span>':`<span class="task-tag tag-${task.tag}">${task.tag.charAt(0).toUpperCase()+task.tag.slice(1)}</span>`}
+      </div>`;
+    }).join('');
+    card.innerHTML=`<div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-icon" style="background:${phase.color}">${phase.icon}</div>
+      <div class="phase-title"><h3>${phase.title}</h3><p>${phase.subtitle}</p></div>
+      <div class="phase-stats"><div class="phase-count">${done}/${total}</div><div class="mini-bar"><div class="mini-bar-fill" style="width:${pct}%"></div></div></div>
+      <div class="phase-toggle">▾</div>
+    </div><div class="phase-body">${tasksHTML}</div>`;
+    c.appendChild(card);
+  });updateProgress();
+}
+
+function togglePhase(h){
+  h.parentElement.classList.toggle('collapsed');
+  h.querySelector('.phase-toggle').textContent=h.parentElement.classList.contains('collapsed')?'▸':'▾';
+}
+function toggleTask(pid,idx){
+  if(!state[pid])state[pid]={};
+  state[pid][idx]=!state[pid][idx];saveState(state);renderPhases();
+}
+function updateProgress(){
+  let total=0,done=0;
+  phases.forEach(p=>{const ps=state[p.id]||{};total+=p.tasks.length;done+=p.tasks.filter((_,i)=>ps[i]).length;});
+  const pct=total?Math.round(done/total*100):0;
+  document.getElementById('main-progress').style.width=pct+'%';
+  document.getElementById('progress-text').textContent=`${done} / ${total} tasks done`;
+}
+function filterTasks(f,btn){
+  currentFilter=f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');renderPhases();
+}
+function resetAll(){if(confirm('Reset all checkboxes?')){state={};saveState(state);renderPhases();}}
+function updateAttendees(){
+  const vals=['att1','att2','att3','att4'].map(id=>parseInt(document.getElementById(id).value)||0);
+  const total=vals.reduce((a,b)=>a+b,0),goal=30,pct=Math.min(Math.round(total/goal*100),100);
+  document.getElementById('att-bar').style.width=pct+'%';
+  document.getElementById('att-pct').textContent=pct+'%';
+  document.getElementById('att-total').innerHTML=`${total}<span>confirmed attendees ${total>=goal?'🎉 Goal reached!':`· ${goal-total} more to go`}</span>`;
+}
+function updateCountdown(){
+  const diff=new Date('2025-06-13T18:30:00')-new Date();
+  if(diff<=0){document.getElementById('countdown-strip').textContent="🎉 It's Event Day! Go crush it, Samantha & team!";return;}
+  const d=Math.floor(diff/86400000),h=Math.floor((diff%86400000)/3600000);
+  document.getElementById('countdown-strip').textContent=`⏳ ${d} days, ${h} hours until the Oskaloosa NAL — June 13 · 6:30 PM`;
+}
+renderPhases();updateAttendees();updateCountdown();setInterval(updateCountdown,60000);
+</script>
+</body>
+</html>
