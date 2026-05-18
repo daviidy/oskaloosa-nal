@@ -397,6 +397,25 @@
     line-height: 1.8;
   }
 
+  .hero-register-btn {
+    display: inline-block;
+    margin-top: 22px;
+    padding: 14px 32px;
+    background: var(--terra);
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    font-family: 'Jost', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    transition: background .2s, transform .1s;
+    box-shadow: 0 4px 20px rgba(196,122,80,.35);
+  }
+
+  .hero-register-btn:hover { background: var(--terra-light); transform: translateY(-1px); }
+  .hero-register-btn:active { transform: scale(.97); }
+
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(18px); }
     to { opacity: 1; transform: translateY(0); }
@@ -427,6 +446,8 @@
     <div class="photo-badge">Hosted by Samantha Yao</div>
   </div>
 
+  <a href="#form-section" class="hero-register-btn">Reserve My Seat →</a>
+
   <div class="hero-curve"></div>
 </section>
 
@@ -446,7 +467,7 @@
   </div>
 
   <!-- Form -->
-  <div class="form-section">
+  <div class="form-section" id="form-section">
     <div class="form-title">Reserve Your Seat</div>
     <div class="form-subtitle">
       Free event · Limited seating · Takes 30 seconds
