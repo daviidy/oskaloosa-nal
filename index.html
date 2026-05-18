@@ -318,6 +318,45 @@
     display: none;
   }
 
+  .phone-wrap {
+    display: flex;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: border-color .2s;
+    background: white;
+  }
+
+  .phone-wrap:focus-within {
+    border-color: var(--sage-light);
+  }
+
+  .phone-prefix {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 0 12px;
+    background: #f5f2ec;
+    border-right: 1.5px solid var(--border);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--charcoal);
+    white-space: nowrap;
+    user-select: none;
+    flex-shrink: 0;
+  }
+
+  .phone-wrap input {
+    border: none !important;
+    border-radius: 0 !important;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .phone-wrap input:focus {
+    border-color: transparent !important;
+  }
+
   /* reminder note */
   .reminder-note {
     display: flex;
@@ -436,8 +475,12 @@
 
       <div class="field-group">
         <label for="phone">Phone Number</label>
-        <input type="tel" id="phone" name="phone" placeholder="+1 (555) 000-0000" required>
-        <span class="field-error" id="phoneErr">Please enter your phone number.</span>
+        <div class="phone-wrap">
+          <div class="phone-prefix">🇺🇸 +1</div>
+          <input type="tel" id="phone" name="phone" placeholder="(555) 000-0000" maxlength="14" autocomplete="tel" required>
+        </div>
+        <input type="hidden" id="phoneFormatted" name="phone_full">
+        <span class="field-error" id="phoneErr">Please enter a valid 10-digit US/Canada number.</span>
       </div>
 
       <button type="submit" class="rsvp-submit-btn" id="submitBtn">Reserve My Seat →</button>
@@ -470,8 +513,62 @@
 
 
 <script>
+  // Phone formatting — digits only, auto-formats as (XXX) XXX-XXXX
+  const phoneInput = document.getElementById('phone');
+  const phoneFormatted = document.getElementById('phoneFormatted');
+
+  phoneInput.addEventListener('keydown', function(e) {
+    const allowed = ['Backspace','Delete','ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Tab','Home','End'];
+    if (!allowed.includes(e.key) && !/^\d$/.test(e.key)) {
+      e.preventDefault();
+    }
+  });
+
+  phoneInput.addEventListener('input', function() {
+    const digits = this.value.replace(/\D/g, '').slice(0, 10);
+    let formatted = '';
+    if (digits.length === 0) {
+      formatted = '';
+    } else if (digits.length <= 3) {
+      formatted = '(' + digits;
+    } else if (digits.length <= 6) {
+      formatted = '(' + digits.slice(0,3) + ') ' + digits.slice(3);
+    } else {
+      formatted = '(' + digits.slice(0,3) + ') ' + digits.slice(3,6) + '-' + digits.slice(6);
+    }
+    this.value = formatted;
+    phoneFormatted.value = digits.length === 10 ? '+1' + digits : '';
+  });
+
+  phoneInput.addEventListener('paste', function(e) {
+    e.preventDefault();
+    const pasted = (e.clipboardData || window.clipboardData).getData('text');
+    const digits = pasted.replace(/\D/g, '').slice(0, 10);
+    phoneInput.value = '';
+    phoneInput.dispatchEvent(new InputEvent('input'));
+    // re-trigger with digits
+    const digitsOnly = digits;
+    let formatted = '';
+    if (digitsOnly.length <= 3) formatted = '(' + digitsOnly;
+    else if (digitsOnly.length <= 6) formatted = '(' + digitsOnly.slice(0,3) + ') ' + digitsOnly.slice(3);
+    else formatted = '(' + digitsOnly.slice(0,3) + ') ' + digitsOnly.slice(3,6) + '-' + digitsOnly.slice(6);
+    phoneInput.value = formatted;
+    phoneFormatted.value = digitsOnly.length === 10 ? '+1' + digitsOnly : '';
+  });
+
   document.getElementById('rsvpForm').addEventListener('submit', async function(e) {
     e.preventDefault();
+
+    // Validate phone — must be 10 digits
+    const digits = phoneInput.value.replace(/\D/g, '');
+    if (digits.length !== 10) {
+      document.getElementById('phoneErr').style.display = 'block';
+      phoneInput.focus();
+      return;
+    } else {
+      document.getElementById('phoneErr').style.display = 'none';
+    }
+
     const btn = document.getElementById('submitBtn');
     btn.disabled = true;
     btn.textContent = 'Sending…';
