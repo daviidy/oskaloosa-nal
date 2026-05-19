@@ -83,7 +83,7 @@
 
 <header>
   <div class="event-label">🏆 Wealth Builders · WFG</div>
-  <h1>Oskaloosa NAL<br><span>June 13, 2025</span></h1>
+  <h1>Oskaloosa NAL<br><span>June 13, 2026</span></h1>
   <div class="header-meta">
     <span>📍 Oskaloosa Public Library · Iowa</span>
     <span>🎯 30+ Attendees</span>
@@ -145,7 +145,7 @@
 const phases=[
   {id:"venue",icon:"🏛️",color:"#e8f4fd",title:"Phase 1 — Venue & Logistics",subtitle:"Secure the library room · Confirm June 13",tasks:[
     {text:"Call Oskaloosa Public Library — check June 13 availability",note:"Target their largest meeting room (40+ capacity). Ask about A/V, projector, chairs.",tag:"david",urgent:true},
-    {text:"Book the room — confirm 6:30–8:30 PM time slot",note:"Get written confirmation (email or screenshot). Share with the team immediately.",tag:"david",urgent:true},
+    {text:"Book the room — confirm 2:00–4:00 PM time slot",note:"Get written confirmation (email or screenshot). Share with the team immediately.",tag:"david",urgent:true},
     {text:"Confirm projector is available at the library or arrange to bring one",note:"NAL presentations need a screen. Don't assume it's there.",tag:"david"},
     {text:"Confirm the Trainer — lock in their name and travel plan to Oskaloosa",note:"This is the most urgent remote task David has. Book travel ASAP.",tag:"david",urgent:true},
     {text:"Samantha + Trainer plan to arrive in Oskaloosa June 12 (night before)",note:"Arriving the night before removes all day-of travel risk.",tag:"samantha"},
@@ -165,15 +165,15 @@ const phases=[
     {text:"Bethany personally calls her top 15–20 contacts",note:"Script: 'I'm co-hosting a free financial night June 13 — my trainer is flying in from out of state. I specifically thought of you.' Phone call beats text every time.",tag:"bethany",urgent:true},
     {text:"Samantha reaches out to Oskaloosa family + childhood friends",note:"Her hometown roots = instant trust. These should be the easiest yeses on the list.",tag:"samantha",urgent:true},
     {text:"Amanda personally invites her social circle — target 8–10 people",note:"Same personal framing. Not a mass blast — specific, thoughtful invites.",tag:"amanda"},
-    {text:"Bethany creates a Facebook Event for the community",note:"Title: 'Free Financial Opportunity Night — Oskaloosa, June 13 · 6:30 PM'. Keep description simple and curiosity-driven.",tag:"bethany"},
+    {text:"Bethany creates a Facebook Event for the community",note:"Title: 'Free Financial Opportunity Night — Oskaloosa, June 13 · 2:00 PM'. Keep description simple and curiosity-driven.",tag:"bethany"},
     {text:"Bethany + Amanda post in Oskaloosa Facebook community groups",note:"Search local Oskaloosa groups. Post 3 weeks out, then a reminder 1 week before.",tag:"bethany"},
     {text:"Amanda prints 20–30 flyers — distributes at churches, barbershops, gyms, laundromats",note:"Keep it clean: Date · Library address · Free Event · 'Learn how families build extra income'",tag:"amanda"},
     {text:"David sets up a simple RSVP method (Google Form or DM reply)",note:"Bethany manages RSVPs and reports headcount to David weekly. You need a number.",tag:"david"},
     {text:"Bethany + Samantha send personal reminder texts 48 hrs before the event",note:"Not a group blast — personal texts only. Remind them why they said yes.",tag:"samantha"},
-    {text:"Bethany sends final reminder morning of June 13",note:"'See you tonight at 6:30! [Library address]. We saved you a seat 🙌'",tag:"bethany"},
+    {text:"Bethany sends final reminder morning of June 13",note:"'See you this afternoon at 2:00 PM! [Library address]. We saved you a seat 🙌'",tag:"bethany"},
   ]},
   {id:"content",icon:"📋",color:"#f9e8fd",title:"Phase 4 — Event Content & Flow",subtitle:"Structure the night for maximum impact",tasks:[
-    {text:"David builds the full run-of-show and sends to the team",note:"6:30 doors open → 7:00 Samantha welcome → 7:08 Bethany story → 7:15 Trainer presentation → 7:45 Q&A → 8:10 one-on-ones → 8:30 close",tag:"david"},
+    {text:"David builds the full run-of-show and sends to the team",note:"2:00 doors open → 2:10 Samantha welcome → 2:15 Bethany story → 2:20 Trainer presentation → 3:00 Q&A → 3:20 one-on-ones → 4:00 close",tag:"david"},
     {text:"Trainer prepares the WFG opportunity presentation (under 30 min)",note:"Lead with their pain — debt, income gap, no time — before any product. Keep it tight and visual.",tag:"trainer",urgent:true},
     {text:"Samantha prepares her 5-min opening: why this event, why Oskaloosa, why now",note:"Personal, warm, sets trust. She is the bridge between the room and the business.",tag:"samantha"},
     {text:"Coach Bethany on her 3-minute personal story",note:"Problem she had → how she found WFG → what's changed. Real and specific beats polished and generic.",tag:"bethany"},
@@ -250,17 +250,19 @@ function filterTasks(f,btn){
 function resetAll(){if(confirm('Reset all checkboxes?')){state={};saveState(state);renderPhases();}}
 function updateAttendees(){
   const vals=['att1','att2','att3','att4'].map(id=>parseInt(document.getElementById(id).value)||0);
+  try{localStorage.setItem('nal_osk_att',JSON.stringify(vals));}catch{}
   const total=vals.reduce((a,b)=>a+b,0),goal=30,pct=Math.min(Math.round(total/goal*100),100);
   document.getElementById('att-bar').style.width=pct+'%';
   document.getElementById('att-pct').textContent=pct+'%';
   document.getElementById('att-total').innerHTML=`${total}<span>confirmed attendees ${total>=goal?'🎉 Goal reached!':`· ${goal-total} more to go`}</span>`;
 }
 function updateCountdown(){
-  const diff=new Date('2025-06-13T18:30:00')-new Date();
+  const diff=new Date('2026-06-13T14:00:00')-new Date();
   if(diff<=0){document.getElementById('countdown-strip').textContent="🎉 It's Event Day! Go crush it, Samantha & team!";return;}
   const d=Math.floor(diff/86400000),h=Math.floor((diff%86400000)/3600000);
-  document.getElementById('countdown-strip').textContent=`⏳ ${d} days, ${h} hours until the Oskaloosa NAL — June 13 · 6:30 PM`;
+  document.getElementById('countdown-strip').textContent=`⏳ ${d} days, ${h} hours until the Oskaloosa NAL — June 13 · 2:00 PM`;
 }
+try{const sv=JSON.parse(localStorage.getItem('nal_osk_att')||'null');if(sv){['att1','att2','att3','att4'].forEach((id,i)=>{document.getElementById(id).value=sv[i]||0;});}}catch{}
 renderPhases();updateAttendees();updateCountdown();setInterval(updateCountdown,60000);
 </script>
 </body>
